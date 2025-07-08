@@ -29,7 +29,6 @@ SmartExaminer/
 
 ## 🖼️ Screenshots
 
-> (Add your screenshots below by placing image files in the repo)
 
 ![Home Page](static/home.png)
 ![Question Generator](static/generation.png)
