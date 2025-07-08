@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 2 - Evaluate Answers</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6347; /* Tomato red */
+            --secondary-color: #add8e6; /* Light blue */
+            --accent-color: #40e0d0; /* Turquoise */
+            --background-color: #f5f6f7; /* Light gray */
+            --text-color: #333; /* Dark gray */
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .upload-container {
+            padding: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            background-color: #f9f7f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary, .btn-secondary {
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid var(--secondary-color);
+            resize: vertical;
+        }
+    </style>
+    
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .upload-container {
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            background-color: #f9f7f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary,
+        .btn-secondary {
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+        .btn-primary {
+            background-color: transparent;
+            border-color: #000;
+            color: #000;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #fff;
+        }
+        .upload-btn {
+            display: block;
+            margin: auto;
+        }
+        .next-btn {
+            display: block;
+            margin: 20px auto;
+        }
+        .result-container {
+            margin-top: 50px;
+            padding: 20px;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            background-color: #e9f7ef;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="container text-center">
+        <h1>Evaluate Answer with AI</h1>
+        <div class="row mb-4">
+            <div class="col-md-12 upload-container">
+                <h3>Upload Answer Sheet</h3>
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="file" class="form-control-file" id="pdfFile" name="pdfFile" accept=".pdf" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary upload-btn">Upload</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Display download link for DOCX file -->
+        {% if docx_file_url %}
+        <div class="result-container">
+            <h3>Download Converted DOCX</h3>
+            <p><a href="{{ docx_file_url }}" class="btn btn-secondary" download>Download DOCX</a></p>
+        </div>
+        {% endif %}
+
+        <div class="result-container">
+            <h3>Download Marksheet</h3>
+            <p><a href="/path/to/marksheet/download" class="btn btn-secondary" download>Marksheet</a></p>
+        </div>
+
+        
+        
+        <button class="btn btn-secondary next-btn" onclick="generateMarks()">Generate Marks</button>
+
+        <!-- Marksheet Download Button -->
+<button class="btn btn-secondary" onclick="downloadMarkSheet()">Download Marksheet</button>
+
+<script>
+    function downloadMarkSheet() {
+        window.location.href = "/path/to/marksheet/download"; // Replace with the actual path to your view
+    }
+</script>
+
+        
+        <!-- Result Container -->
+        <div class="result-container">
+            <h3>Results</h3>
+            <p id="results">No results yet.</p>
+        </div>
+        
+        <a href="{% url 'home' %}" class="btn btn-secondary">Back to Home</a>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function generateMarks() {
+    // Generating marks in the range of 30 to 45
+    let marks = Math.floor(Math.random() * 16) + 30;
+    document.getElementById('results').innerText = `Generated Marks: ${marks}`;
+}
+
+    </script>
+</body>
+</html>

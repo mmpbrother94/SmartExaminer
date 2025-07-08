@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page 1 - Generate Questions</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #ff6347; /* Tomato red */
+            --secondary-color: #add8e6; /* Light blue */
+            --accent-color: #40e0d0; /* Turquoise */
+            --background-color: #f5f6f7; /* Light gray */
+            --text-color: #333; /* Dark gray */
+            --font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+
+        .container {
+            background-color: var(--secondary-color); /* Set the container background color */
+            color: var(--text-color);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .upload-container {
+            padding: 20px;
+            border: 2px solid var(--primary-color);
+            border-radius: 10px;
+            background-color: #f9f9f9; /* Light gray */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-primary, .btn-secondary {
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: bold;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover, .btn-secondary:hover {
+            background-color: var(--accent-color);
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid var(--primary-color);
+            resize: vertical;
+        }
+    </style>
+    
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .upload-container {
+            padding: 20px;
+            border: 2px solid #007bff;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .btn-primary,
+        .btn-secondary {
+            border-radius: 5px;
+            padding: 10px 20px;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover,
+        .btn-secondary:hover {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: white;
+        }
+        .btn-primary {
+            background-color: transparent;
+            border-color: #000;
+            color: #000;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            color: #fff;
+        }
+        .upload-btn {
+            display: block;
+            margin: auto;
+        }
+        .next-btn {
+            display: block;
+            margin: 20px auto;
+        }
+        .result-container {
+            margin-top: 50px;
+            padding: 20px;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            background-color: #e9f7ef;
+            box-shadow: 0 0 10px rgba(0, 123, 255, 0.1);
+        }
+    </style>
+    
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <a class="navbar-brand" href="#">Question Generator & Evaluator AI</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'page1' %}">Page 1</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'page2' %}">Page 2</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <h1 class="text-center">Generate Questions</h1>
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form method="post" enctype="multipart/form-data" action="{% url 'page1' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="title">Title:</label>
+                        <input type="text" class="form-control" id="title" name="title">
+                    </div>
+                    <div class="form-group">
+                        <label for="file">Upload DOCX File:</label>
+                        <input type="file" class="form-control-file" id="file" name="file" accept=".docx">
+                    </div>
+                    <div class="form-group">
+                        <label for="class_name">Class:</label>
+                        <input type="text" class="form-control" id="class_name" name="class_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject:</label>
+                        <input type="text" class="form-control" id="subject" name="subject">
+                    </div>
+                    <div class="form-group">
+                        <label for="exam_name">Exam Name:</label>
+                        <input type="text" class="form-control" id="exam_name" name="exam_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="total_questions">Total Questions:</label>
+                        <input type="number" class="form-control" id="total_questions" name="total_questions">
+                    </div>
+                    <div class="form-group">
+                        <label for="duration">Duration:</label>
+                        <input type="text" class="form-control" id="duration" name="duration">
+                    </div>
+                    <div class="form-group">
+                        <label for="full_marks">Full Marks:</label>
+                        <input type="number" class="form-control" id="full_marks" name="full_marks">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Generate Questions</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
